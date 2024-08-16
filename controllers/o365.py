@@ -48,8 +48,7 @@ async def login_o365():
     }
     auth_url = f"{authorization_url}?{urlencode(auth_url_params)}"
     return RedirectResponse(auth_url)
-
-
+    
 async def auth_callback_o365(request: Request):
     code = request.query_params.get("code")
 
@@ -61,7 +60,8 @@ async def auth_callback_o365(request: Request):
         "grant_type": "authorization_code",
         "code": code,
         "redirect_uri": redirect_uri,
-        "code_verifier": pkce
+        "code_verifier": pkce,
+        "client_secret": client_secret 
     }
 
     token_response = requests.post(token_url, data=token_data)
@@ -71,7 +71,7 @@ async def auth_callback_o365(request: Request):
         return JSONResponse(content={"access_token": token_response_data["access_token"]})
     else:
         return JSONResponse(content={
-            "error": token_response_data.get("error")
-            , "error_description": token_response_data.get("error_description")}
-            , status_code=400
+            "error": token_response_data.get("error"),
+            "error_description": token_response_data.get("error_description")},
+            status_code=400
         )

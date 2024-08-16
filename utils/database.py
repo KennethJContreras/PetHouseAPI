@@ -16,7 +16,7 @@ database = os.getenv('SQL_DATABASE')
 username = os.getenv('SQL_USERNAME')
 password = os.getenv('SQL_PASSWORD')
 
-connection_string = f"DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}"
+connection_string = f"Driver={driver};Server={server};Database={database};Uid={username};Pwd={password}"
 
 async def get_db_connection():
     try:

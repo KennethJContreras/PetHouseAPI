@@ -22,7 +22,7 @@ load_dotenv()
 
 
 # Inicializar la app de Firebase Admin
-cred = credentials.Certificate("secrets/admin-firebasesdk.json")
+cred = credentials.Certificate("secrets/admin_firebase.json")
 firebase_admin.initialize_app(cred)
 
 async def register_user_firebase(user: UserRegister):
@@ -37,9 +37,8 @@ async def register_user_firebase(user: UserRegister):
         cursor = conn.cursor()
         try:
             cursor.execute(
-                "EXEC otd.create_user @username = ?, @name = ?, @email = ?",
+                "EXEC Usuarios.SP_CreateUser @username = ?, @email = ?",
                 user_record.uid,
-                user.name,
                 user.email
             )
             conn.commit()
@@ -80,23 +79,6 @@ async def login_user_firebase(user: UserRegister):
                 detail=f"Error al autenticar usuario: {response_data['error']['message']}"
             )
 
-        query = f"SELECT active FROM otd.users WHERE email = '{user.email}'"
-
-        try:
-            logger.info(f"QUERY LIST")
-            result_json = await fetch_query_as_json(query)
-            result_dict = json.loads(result_json)
-            return {
-                "message": "Usuario autenticado exitosamente",
-                "idToken": create_jwt_token(
-                    user.email,
-                    result_dict[0]["active"]
-                )
-            }
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
-
-
     except Exception as e:
         error_detail = {
             "type": type(e).__name__,
@@ -106,4 +88,4 @@ async def login_user_firebase(user: UserRegister):
         raise HTTPException(
             status_code=400,
             detail=f"Error al registrar usuario: {error_detail}"
-        )
+        ) 

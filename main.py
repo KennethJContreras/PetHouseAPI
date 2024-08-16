@@ -3,7 +3,9 @@ from fastapi import FastAPI, Request, Depends
 from models.Userlogin import UserRegister
 
 from controllers.o365 import login_o365 , auth_callback_o365
+
 from controllers.google import login_google , auth_callback_google
+
 from controllers.firebase import register_user_firebase, login_user_firebase
 
 from utils.security import validate
@@ -23,7 +25,7 @@ async def login():
 
 @app.get("/auth/callback")
 async def authcallback(request: Request):
-    return await auth_callback_o365(request)
+    return await auth_callback_o365(request)  
 
 @app.get("/login/google")
 async def logingoogle():
@@ -32,6 +34,7 @@ async def logingoogle():
 @app.get("/auth/google/callback")
 async def authcallbackgoogle(request: Request):
     return await auth_callback_google(request)
+
 
 @app.post("/register")
 async def register(user: UserRegister):

@@ -7,7 +7,7 @@ from utils.globalf import validate_sql_injection
 class UserRegister(BaseModel):
     email: str
     password: str
-    name: Optional[str]
+    username: str
 
     @validator('password')
     def password_validation(cls, value):
@@ -25,7 +25,7 @@ class UserRegister(BaseModel):
 
         return value
 
-    @validator('name')
+    @validator('username')
     def name_validation(cls, value):
         if validate_sql_injection(value):
             raise ValueError('Invalid name')
