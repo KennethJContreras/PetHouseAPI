@@ -26,7 +26,7 @@ async def login_google():
         "client_id": google_client_id,
         "response_type": "code",
         "redirect_uri": google_redirect_uri,
-        "scope": "openid email profile",
+        "scope": "openid email profile",    
         "access_type": "offline",
         "prompt": "consent",
     }

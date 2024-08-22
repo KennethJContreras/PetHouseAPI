@@ -3,10 +3,16 @@ import re
 
 from utils.globalf import validate_sql_injection
 
-class UserLogin(BaseModel):
+class UserRegister(BaseModel):
     email: str
     password: str
-
+    firstname: str
+    lastname: str
+    phone: str
+    birthdate: str
+    IdMunicipio: int
+    IdPlan: int
+    
     @validator('password')
     def password_validation(cls, value):
         if len(value) < 6:
@@ -23,9 +29,9 @@ class UserLogin(BaseModel):
 
         return value
 
-    @validator('email')
-    def email_validation(cls, value):
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
-            raise ValueError('Invalid email address')
+    @validator('firstname')
+    def name_validation(cls, value):
+        if validate_sql_injection(value):
+            raise ValueError('Invalid name')
 
         return value
